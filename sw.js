@@ -1,38 +1,10 @@
-const CACHE_NAME = "pixelcanvas-studio-v2";
+const CACHE_NAME = "pixelcanvas-studio-v3";
 
 const APP_SHELL = [
-  "/",
-  "/index.html",
-  "/all-tools.html",
-  "/how-it-works.html",
-  "/guides.html",
-  "/about.html",
-  "/contact.html",
-  "/privacy.html",
-  "/terms.html",
-
-  "/image-compressor.html",
-  "/image-resizer.html",
-  "/image-format-converter.html",
-  "/ai-background-remover.html",
-  "/passport-photo-maker.html",
-  "/social-media-image-resizer.html",
-  "/image-cropper.html",
-  "/image-rotator.html",
-  "/image-to-text.html",
-  "/heic-converter.html",
-
-  "/photo-to-pdf.html",
-  "/pdf-to-jpg.html",
-  "/jpg-to-pdf.html",
-  "/png-to-pdf.html",
-  "/pdf-merger.html",
-  "/pdf-splitter.html",
-  "/pdf-compressor.html",
-  "/pdf-page-extractor.html",
-
   "/favicon.png",
-  "/manifest.json"
+  "/manifest.json",
+  "/icon-192.png",
+  "/icon-512.png"
 ];
 
 self.addEventListener("install", event => {
@@ -60,33 +32,33 @@ self.addEventListener("fetch", event => {
 
   if (request.method !== "GET") return;
 
+  // Let all page navigations go directly to Cloudflare Pages.
+  // This prevents Safari redirect errors with .html pages.
+  if (request.mode === "navigate") {
+    return;
+  }
+
   event.respondWith(
     caches.match(request).then(cached => {
       if (cached) {
         return cached;
       }
 
-      return fetch(request)
-        .then(response => {
-          if (
-            response &&
-            response.status === 200 &&
-            response.type === "basic"
-          ) {
-            const copy = response.clone();
+      return fetch(request).then(response => {
+        if (
+          response &&
+          response.status === 200 &&
+          response.type === "basic"
+        ) {
+          const copy = response.clone();
 
-            caches.open(CACHE_NAME).then(cache => {
-              cache.put(request, copy);
-            });
-          }
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(request, copy);
+          });
+        }
 
-          return response;
-        })
-        .catch(() => {
-          if (request.mode === "navigate") {
-            return caches.match("/index.html");
-          }
-        });
+        return response;
+      });
     })
   );
 });
