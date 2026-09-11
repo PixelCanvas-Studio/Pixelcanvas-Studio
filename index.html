@@ -4,43 +4,60 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b12">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1181290202717177"
-     crossorigin="anonymous"></script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PixelCanvas Studio">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="https://pixelcanvasstudio.com/">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MSZDRFD3VX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-MSZDRFD3VX');
-</script>
+<link rel="canonical" href="https://pixelcanvassstudio.com/">
 <meta name="description" content="Free image, PDF and document tools for compressing, resizing, converting, cropping, OCR, background removal, PDF editing and more.">
 <title>PixelCanvas Studio | Free Image, PDF & Document Tools</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-
-#toolSearch {
-    font-size: 16px !important;
-}
-
-:root{--bg:#080b12;--card:#111722;--card2:#151d2a;--border:#222c3b;--text:#f5f7fb;--muted:#9aa6b8;--blue:#3b82f6;--blue2:#8ab8ff;--green:#34d399}
+:root{--bg:#080b12;--card:#111722;--card2:#151d2a;--border:#222c3b;--text:#f5f7fb;--muted:#9aa6b8;--blue:#3b82f6;--blue2:#8ab8ff;--green:#34d399;--danger:#f87171}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
 html{scroll-behavior:smooth}
 body{background:radial-gradient(circle at top,rgba(59,130,246,.10),transparent 32rem),var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
 a{color:inherit;text-decoration:none}
+button,input{font:inherit}
 .container{width:min(1120px,calc(100% - 30px));margin:auto}
+.auth-screen{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at 50% 0,rgba(59,130,246,.15),transparent 34rem),#080b12;display:grid;place-items:center;padding:22px;overflow:auto}
+.auth-card{width:min(430px,100%);text-align:center}
+.auth-brand{display:flex;justify-content:center;align-items:center;gap:10px;font-size:22px;font-weight:800;margin-bottom:12px}
+.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff}
+.auth-tagline{color:var(--muted);font-size:14px;margin-bottom:28px}
+.auth-panel{background:rgba(17,23,34,.82);border:1px solid var(--border);border-radius:22px;padding:25px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.auth-panel h1{font-size:25px;margin-bottom:7px}
+.auth-panel>p{color:var(--muted);font-size:13px;margin-bottom:22px}
+.auth-buttons{display:grid;gap:11px}
+.auth-btn{width:100%;min-height:50px;border:1px solid #394456;background:#111722;color:#f5f7fb;border-radius:13px;display:flex;align-items:center;position:relative;justify-content:center;font-weight:700;font-size:14px;cursor:pointer}
+.auth-btn:hover{background:#151d2a;border-color:#4a586d}
+.auth-icon{position:absolute;left:17px;width:21px;height:21px;display:grid;place-items:center}
+.google-g{font-size:20px;font-weight:800;background:conic-gradient(from -45deg,#4285f4 0 25%,#34a853 25% 45%,#fbbc05 45% 65%,#ea4335 65% 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fb{font-size:21px;color:#1877f2;font-weight:900}
+.apple{font-size:21px;color:#fff}
+.phone-icon{width:14px;height:21px;border:2px solid #fff;border-radius:4px;position:relative}
+.phone-icon:after{content:"";position:absolute;left:4px;bottom:2px;width:3px;height:3px;border-radius:50%;background:#fff}
+.auth-divider{display:flex;align-items:center;gap:10px;color:#718096;font-size:11px;margin:18px 0}
+.auth-divider:before,.auth-divider:after{content:"";height:1px;background:var(--border);flex:1}
+.email-form{display:grid;gap:10px}
+.email-form input{width:100%;padding:13px 14px;border:1px solid var(--border);background:#0c111a;color:#fff;border-radius:11px;outline:none}
+.email-form input:focus{border-color:var(--blue)}
+.primary-btn{background:var(--blue);border-color:var(--blue);color:#fff}
+.auth-note{font-size:11px;color:#718096;margin-top:17px}
+.auth-note a{color:var(--blue2)}
+.auth-error{display:none;color:var(--danger);font-size:12px;margin-top:12px}
+.user-bar{display:none;align-items:center;gap:9px}
+.avatar{width:35px;height:35px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:grid;place-items:center;font-weight:800}
+.user-email{font-size:12px;color:var(--muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.logout-btn{padding:8px 11px;border:1px solid var(--border);background:var(--card);color:#dce4ef;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer}
 .site-header{position:sticky;top:0;z-index:100;background:rgba(8,11,18,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
 .nav{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;white-space:nowrap}
-.brand-mark{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;font-size:18px}
-.nav-links{display:flex;gap:20px}
+.nav .brand-mark{width:36px;height:36px;border-radius:11px;font-size:18px}
+.nav-links{display:flex;gap:20px;align-items:center}
 .nav-links a{color:var(--muted);font-size:14px;font-weight:600}
 .nav-links a:hover{color:#fff}
 .hero{text-align:center;padding:78px 0 55px}
@@ -92,16 +109,70 @@ footer{margin-top:35px;border-top:1px solid rgba(255,255,255,.07);padding:30px 0
 .footer-bottom{padding-top:17px;border-top:1px solid rgba(255,255,255,.06)}
 .hidden{display:none!important}
 @media(max-width:850px){.featured,.grid{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.trust-grid{grid-template-columns:1fr}}
-@media(max-width:620px){.container{width:calc(100% - 22px)}.nav{min-height:62px}.nav-links{gap:10px}.nav-links a:nth-child(2){display:none}.hero{padding:58px 0 40px}.hero h1{letter-spacing:-1.7px}.hero p{font-size:14px}.featured,.grid,.steps{grid-template-columns:1fr}.section{padding:27px 0}.head{align-items:flex-start;flex-direction:column}.footer-top,.footer-bottom{flex-direction:column}}
+@media(max-width:620px){.container{width:calc(100% - 22px)}.nav{min-height:62px}.nav-links{gap:10px}.nav-links a:nth-child(2){display:none}.hero{padding:58px 0 40px}.hero h1{letter-spacing:-1.7px}.hero p{font-size:14px}.featured,.grid,.steps{grid-template-columns:1fr}.section{padding:27px 0}.head{align-items:flex-start;flex-direction:column}.footer-top,.footer-bottom{flex-direction:column}.user-email{display:none}}
 </style>
 </head>
 
 <body>
+
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-brand"><span class="brand-mark">✦</span><span>PixelCanvas Studio</span></div>
+    <div class="auth-tagline">Simplify image and document management</div>
+
+    <div class="auth-panel">
+      <h1>Welcome to PixelCanvas Studio</h1>
+      <p>Sign in to continue to your tools and projects.</p>
+
+      <div class="auth-buttons">
+        <button class="auth-btn" id="googleBtn" type="button">
+          <span class="auth-icon google-g">G</span>
+          Continue with Google
+        </button>
+
+        <button class="auth-btn" id="appleBtn" type="button">
+          <span class="auth-icon apple">●</span>
+          Continue with Apple
+        </button>
+
+        <button class="auth-btn" id="facebookBtn" type="button">
+          <span class="auth-icon fb">f</span>
+          Continue with Facebook
+        </button>
+
+        <button class="auth-btn" id="phoneBtn" type="button">
+          <span class="auth-icon"><span class="phone-icon"></span></span>
+          Continue with phone number
+        </button>
+      </div>
+
+      <div class="auth-divider"><span>OR</span></div>
+
+      <form class="email-form" id="emailForm">
+        <input id="email" type="email" placeholder="Email address" autocomplete="email" required>
+        <input id="password" type="password" placeholder="Password" autocomplete="current-password" minlength="6" required>
+        <button class="auth-btn primary-btn" type="submit">Log in with email</button>
+      </form>
+
+      <div id="authError" class="auth-error"></div>
+
+      <div class="auth-note">
+        By continuing, you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Policy</a>.
+      </div>
+    </div>
+  </div>
+</div>
+
 <header class="site-header">
 <div class="container nav">
 <a href="/" class="brand"><span class="brand-mark">✦</span><span>PixelCanvas Studio</span></a>
 <nav class="nav-links" aria-label="Main navigation">
 <a href="all-tools.html">All Tools</a><a href="guides.html">Guides</a><a href="#faq">FAQ</a>
+<div id="userBar" class="user-bar">
+<span id="avatar" class="avatar">P</span>
+<span id="userEmail" class="user-email"></span>
+<button id="logoutBtn" class="logout-btn" type="button">Sign out</button>
+</div>
 </nav>
 </div>
 </header>
@@ -201,7 +272,7 @@ footer{margin-top:35px;border-top:1px solid rgba(255,255,255,.07);padding:30px 0
 <div class="trust-grid">
 <div><h2>Designed with privacy in mind</h2><p>PixelCanvas Studio is designed to make common image and document tasks simple while minimizing unnecessary data handling. File processing and deletion practices can vary by tool and are explained in our privacy information.</p></div>
 <div class="trust-list">
-<div class="trust-item"><span>✓</span>No account required for the core tools.</div>
+<div class="trust-item"><span>✓</span>Account-based access and secure authentication.</div>
 <div class="trust-item"><span>✓</span>Clear information about file handling.</div>
 <div class="trust-item"><span>✓</span>Results can be downloaded after processing.</div>
 <div class="trust-item"><span>✓</span>Privacy and Terms pages are available.</div>
@@ -217,7 +288,7 @@ footer{margin-top:35px;border-top:1px solid rgba(255,255,255,.07);padding:30px 0
 <div class="faq">
 <details><summary>What is PixelCanvas Studio?</summary><p>PixelCanvas Studio is an online collection of image, PDF and document tools for common tasks such as compression, resizing, conversion, cropping, OCR and PDF processing.</p></details>
 <details><summary>Are the tools free to use?</summary><p>The website is designed to provide free access to its core tools. Individual tools may have their own processing limits or technical requirements, which will be explained on the relevant tool page.</p></details>
-<details><summary>Do I need to create an account?</summary><p>No account is planned for the core PixelCanvas Studio experience. You can use the available tools without creating a user account.</p></details>
+<details><summary>Do I need to create an account?</summary><p>Yes. PixelCanvas Studio uses account-based access so your profile, projects and other account features can be securely connected across devices.</p></details>
 <details><summary>What types of files are supported?</summary><p>Supported formats depend on the tool. Common image formats include JPG, PNG and WebP, while PDF tools process PDF documents. Each tool page identifies the formats it supports.</p></details>
 <details><summary>Are uploaded files stored permanently?</summary><p>PixelCanvas Studio is designed to use temporary file processing where server-side processing is required. File handling and deletion practices are described in the Privacy Policy and on relevant tool pages.</p></details>
 <details><summary>Can I use PixelCanvas Studio on my phone?</summary><p>Yes. The website is designed to work on modern mobile browsers, tablets and desktop devices. Some tools may behave differently depending on the device and browser.</p></details>
@@ -246,23 +317,144 @@ footer{margin-top:35px;border-top:1px solid rgba(255,255,255,.07);padding:30px 0
 
 <script>
 "use strict";
-document.getElementById("year").textContent=new Date().getFullYear();
 
-const input=document.getElementById("toolSearch");
-const cards=document.querySelectorAll(".searchable");
-input.addEventListener("input",function(){
-    const q=this.value.trim().toLowerCase();
-    cards.forEach(card=>{
-        const text=(card.dataset.name||"").toLowerCase();
-        card.classList.toggle("hidden",!!q && !text.includes(q));
-    });
+/* PixelCanvas Studio + Supabase Auth */
+const SUPABASE_URL = "https://xtaxccmzbuxrxzibmgmd.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_UDKbxZxo0ClzS57m3KtIvQ_b_JMDYjX";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+const authScreen = document.getElementById("authScreen");
+const authError = document.getElementById("authError");
+const userBar = document.getElementById("userBar");
+const userEmail = document.getElementById("userEmail");
+const avatar = document.getElementById("avatar");
+
+function showAuthError(message){
+  authError.textContent = message;
+  authError.style.display = "block";
+}
+
+function clearAuthError(){
+  authError.textContent = "";
+  authError.style.display = "none";
+}
+
+function showSignedIn(user){
+  authScreen.style.display = "none";
+  userBar.style.display = "flex";
+  userEmail.textContent = user.email || "Signed in";
+
+  const metadata = user.user_metadata || {};
+  const name = metadata.full_name || metadata.name || user.email || "P";
+  avatar.textContent = name.charAt(0).toUpperCase();
+
+  if(metadata.avatar_url){
+    avatar.innerHTML = "";
+    avatar.src = metadata.avatar_url;
+    avatar.alt = "Profile";
+  }
+}
+
+function showSignedOut(){
+  authScreen.style.display = "grid";
+  userBar.style.display = "none";
+  avatar.textContent = "P";
+  avatar.removeAttribute("src");
+}
+
+async function handleGoogleLogin(){
+  clearAuthError();
+
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: window.location.origin + "/"
+    }
+  });
+
+  if(error) showAuthError(error.message);
+}
+
+document.getElementById("googleBtn").addEventListener("click", handleGoogleLogin);
+
+document.getElementById("emailForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+  clearAuthError();
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if(error){
+    showAuthError(error.message);
+    return;
+  }
+
+  if(data.user) showSignedIn(data.user);
+});
+
+document.getElementById("logoutBtn").addEventListener("click", async function(){
+  await supabaseClient.auth.signOut();
+  showSignedOut();
+});
+
+document.getElementById("appleBtn").addEventListener("click", function(){
+  showAuthError("Apple Sign-In will be enabled after Apple OAuth is configured.");
+});
+
+document.getElementById("facebookBtn").addEventListener("click", function(){
+  showAuthError("Facebook Sign-In will be enabled after Facebook OAuth is configured.");
+});
+
+document.getElementById("phoneBtn").addEventListener("click", function(){
+  showAuthError("Phone Sign-In will be enabled after phone OTP/SMS authentication is configured.");
+});
+
+async function initializeAuth(){
+  const { data: { session } } = await supabaseClient.auth.getSession();
+
+  if(session && session.user){
+    showSignedIn(session.user);
+  }else{
+    showSignedOut();
+  }
+
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    if(session && session.user){
+      showSignedIn(session.user);
+    }else{
+      showSignedOut();
+    }
+  });
+}
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+const input = document.getElementById("toolSearch");
+const cards = document.querySelectorAll(".searchable");
+input.addEventListener("input", function(){
+  const q = this.value.trim().toLowerCase();
+  cards.forEach(card => {
+    const text = (card.dataset.name || "").toLowerCase();
+    card.classList.toggle("hidden", !!q && !text.includes(q));
+  });
 });
 
 if("serviceWorker" in navigator){
-    window.addEventListener("load",()=>{
-        navigator.serviceWorker.register("/sw.js").catch(()=>{});
-    });
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
 }
+
+initializeAuth();
 </script>
 </body>
 </html>
