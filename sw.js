@@ -1,4 +1,4 @@
-const CACHE_NAME = "pixelcanvas-studio-v3";
+const CACHE_NAME = "pixelcanvas-studio-v4";
 
 const APP_SHELL = [
   "/favicon.png",
@@ -32,12 +32,43 @@ self.addEventListener("fetch", event => {
 
   if (request.method !== "GET") return;
 
-  // Let all page navigations go directly to Cloudflare Pages.
-  // This prevents Safari redirect errors with .html pages.
+  // Let normal page navigation go directly to Cloudflare Pages.
   if (request.mode === "navigate") {
     return;
   }
 
+  // IMPORTANT:
+  // Do not intercept downloads or generated files.
+  // Let the browser handle them directly.
+  const url = new URL(request.url);
+
+  const downloadExtensions = [
+    ".pdf",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".webp",
+    ".gif",
+    ".heic",
+    ".zip",
+    ".txt",
+    ".doc",
+    ".docx"
+  ];
+
+  const isDownloadFile = downloadExtensions.some(ext =>
+    url.pathname.toLowerCase().endsWith(ext)
+  );
+
+  if (
+    isDownloadFile ||
+    request.destination === "download" ||
+    request.destination === "document"
+  ) {
+    return;
+  }
+
+  // For everything else, use the small PWA cache.
   event.respondWith(
     caches.match(request).then(cached => {
       if (cached) {
